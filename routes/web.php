@@ -5,6 +5,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
+// Root route
+Route::get('/', function ()
+{
+    if (auth()->check())
+    {
+        return redirect()->route('admin.dashboard');
+    }
+    return redirect()->route('login');
+});
+
 // Auth routes
 Route::middleware('guest')->group(function ()
 {

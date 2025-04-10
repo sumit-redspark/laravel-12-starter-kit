@@ -129,7 +129,38 @@ php artisan migrate
 php artisan db:seed
 ```
 
-## 🔐 Permissions Setup
+The seeders will create the following data:
+
+### Roles and Permissions
+
+-   **Super Admin Role**: Has all permissions
+-   **Admin Role**: Has permissions for user and role management
+-   **User Role**: Has basic view permissions
+
+### Default Users
+
+Three default users are created with the following credentials:
+
+1. **Super Admin**
+
+    - Email: superadmin@superadmin.com
+    - Password: 123456
+    - Role: Super Admin (Full access)
+
+2. **Admin**
+
+    - Email: admin@admin.com
+    - Password: 123456
+    - Role: Admin (User and Role management access)
+
+3. **Regular User**
+    - Email: user@user.com
+    - Password: 123456
+    - Role: User (Basic view access)
+
+You can use any of these accounts to log in and test the system. It's recommended to change these passwords after your first login.
+
+## �� Permissions Setup
 
 1. The permissions are defined in `app/Enums/PermissionEnum.php`. You can add new permissions by extending this enum:
 
