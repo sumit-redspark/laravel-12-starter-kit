@@ -76,7 +76,7 @@ A comprehensive Laravel starter kit with pre-configured authentication, permissi
 1. Clone the repository:
 
 ```bash
-git clone [your-repository-url]
+git clone https://github.com/sumit-redspark/laravel-12-starter-kit.git
 cd laravel-starter-kit
 ```
 
