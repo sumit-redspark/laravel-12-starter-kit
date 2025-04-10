@@ -77,7 +77,7 @@ A comprehensive Laravel starter kit with pre-configured authentication, permissi
 
 ```bash
 git clone https://github.com/sumit-redspark/laravel-12-starter-kit.git
-cd laravel-starter-kit
+cd laravel-12-starter-kit
 ```
 
 2. Install PHP dependencies:
