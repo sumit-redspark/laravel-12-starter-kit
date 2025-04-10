@@ -57,6 +57,7 @@ A comprehensive Laravel starter kit with pre-configured authentication, permissi
 ### Authentication & Authorization
 
 -   `laravel/sanctum` - API Authentication
+-   `laravel/passport` - OAuth2 Server Implementation
 
 ### Database & ORM
 
@@ -160,7 +161,7 @@ Three default users are created with the following credentials:
 
 You can use any of these accounts to log in and test the system. It's recommended to change these passwords after your first login.
 
-## �� Permissions Setup
+## 📋 Permissions Setup
 
 1. The permissions are defined in `app/Enums/PermissionEnum.php`. You can add new permissions by extending this enum:
 
@@ -322,3 +323,103 @@ resources/
 ## 🔒 Security
 
 If you discover any security related issues, please email sumit.redspark@gmail.com instead of using the issue tracker.
+
+## 🔐 API Authentication Setup
+
+### Laravel Passport Setup
+
+1. Install Passport:
+
+```bash
+composer require laravel/passport
+```
+
+2. Run Passport migrations:
+
+```bash
+php artisan migrate
+```
+
+3. Install Passport encryption keys:
+
+```bash
+php artisan passport:install
+```
+
+4. Add the Passport service provider to `config/app.php`:
+
+```php
+'providers' => [
+    // ...
+    Laravel\Passport\PassportServiceProvider::class,
+],
+```
+
+5. In your `User` model, add the `HasApiTokens` trait:
+
+```php
+use Laravel\Passport\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+    // ...
+}
+```
+
+6. In `app/Providers/AuthServiceProvider.php`, register Passport routes:
+
+```php
+use Laravel\Passport\Passport;
+
+public function boot()
+{
+    $this->registerPolicies();
+    Passport::routes();
+}
+```
+
+7. In `config/auth.php`, set the API guard driver to passport:
+
+```php
+'guards' => [
+    'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+    ],
+],
+```
+
+### Using Passport for API Authentication
+
+1. Create a new client:
+
+```bash
+php artisan passport:client --password
+```
+
+2. Use the client credentials to authenticate API requests:
+
+```bash
+curl -X POST http://your-app.com/oauth/token \
+    -H "Accept: application/json" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "grant_type": "password",
+        "client_id": "your-client-id",
+        "client_secret": "your-client-secret",
+        "username": "user@example.com",
+        "password": "password",
+        "scope": ""
+    }'
+```
+
+3. Include the access token in subsequent API requests:
+
+```bash
+curl -X GET http://your-app.com/api/user \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer your-access-token"
+```
+
+For more detailed information about Passport, refer to the [official Laravel Passport documentation](https://laravel.com/docs/passport).
