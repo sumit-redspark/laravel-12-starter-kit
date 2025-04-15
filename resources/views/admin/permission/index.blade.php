@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Permissions Management')
+@section('title', __('permissions.title'))
 
-@section('meta_title', 'Permissions Management')
-@section('meta_author', 'Admin')
-@section('meta_description', 'Manage permissions for your application')
-@section('meta_keywords', 'permissions, management, admin')
+@section('meta_title', __('permissions.meta_title'))
+@section('meta_author', __('permissions.meta_author'))
+@section('meta_description', __('permissions.meta_description'))
+@section('meta_keywords', __('permissions.meta_keywords'))
 
 @section('header')
 @endsection
@@ -15,12 +15,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Permissions Management</h3>
+                    <h3 class="mb-0">@lang('permissions.management')</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Permissions</li>
+                        <li class="breadcrumb-item"><a href="#">@lang('permissions.home')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('permissions.permissions')</li>
                     </ol>
                 </div>
             </div>
@@ -33,13 +33,13 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Permissions List</h3>
+                    <h3 class="card-title">@lang('permissions.list')</h3>
                     <div class="card-tools">
                         @role(\App\Enums\Role::SUPER_ADMIN)
                             @can($Permission::PERMISSION_CREATE)
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#permissionModal">
-                                    <i class="fas fa-plus"></i> Add New Permission
+                                    <i class="fas fa-plus"></i> @lang('permissions.add_new')
                                 </button>
                             @endcan
                         @endrole
@@ -50,10 +50,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Guard Name</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
+                                <th>@lang('permissions.name')</th>
+                                <th>@lang('permissions.guard_name')</th>
+                                <th>@lang('permissions.created_at')</th>
+                                <th>@lang('permissions.actions')</th>
                             </tr>
                         </thead>
                     </table>
@@ -67,21 +67,21 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="permissionModalLabel">Add Permission</h5>
+                    <h5 class="modal-title" id="permissionModalLabel">@lang('permissions.add_permission')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="permissionForm" onsubmit="return false;">
                     <div class="modal-body">
                         <input type="hidden" id="permission_id" name="id">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Permission Name</label>
+                            <label for="name" class="form-label">@lang('permissions.permission_name')</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="savePermission">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@lang('permissions.close')</button>
+                        <button type="submit" class="btn btn-primary" id="savePermission">@lang('permissions.save')</button>
                     </div>
                 </form>
             </div>
@@ -139,9 +139,9 @@
                 },
                 messages: {
                     name: {
-                        required: "Please enter a permission name",
-                        minlength: "Permission name must be at least 3 characters long",
-                        maxlength: "Permission name cannot exceed 50 characters"
+                        required: "@lang('permissions.validation.required')",
+                        minlength: "@lang('permissions.validation.minlength')",
+                        maxlength: "@lang('permissions.validation.maxlength')"
                     }
                 },
                 errorElement: 'span',
@@ -193,7 +193,7 @@
                                     key][0]);
                             });
                         } else {
-                            showError('An error occurred');
+                            showError('@lang('permissions.errors.general')');
                         }
                     }
                 });
@@ -212,14 +212,14 @@
                             var permission = response.data;
                             $('#permission_id').val(permission.id);
                             $('#name').val(permission.name);
-                            $('#permissionModalLabel').text('Edit Permission');
+                            $('#permissionModalLabel').text('@lang('permissions.edit_permission')');
                             $('#permissionModal').modal('show');
                         } else {
-                            showError('Failed to fetch permission data');
+                            showError('@lang('permissions.errors.fetch_failed')');
                         }
                     },
                     error: function() {
-                        showError('An error occurred while fetching permission data');
+                        showError('@lang('permissions.errors.fetch_error')');
                     }
                 });
             });
@@ -227,8 +227,8 @@
             // Handle delete button click
             $(document).on('click', '.delete-data', function() {
                 var id = $(this).data('id');
-                showConfirm("You won't be able to revert this!", "Are you sure?", {
-                    confirmButtonText: 'Yes, delete it!'
+                showConfirm("@lang('permissions.delete.warning')", "@lang('permissions.delete.confirm')", {
+                    confirmButtonText: '@lang('permissions.delete.confirm_button')'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -243,9 +243,7 @@
                                 showSuccess(response.message);
                             },
                             error: function() {
-                                showError(
-                                    'An error occurred while deleting the permission'
-                                );
+                                showError('@lang('permissions.errors.delete_error')');
                             }
                         });
                     }
@@ -263,7 +261,7 @@
             function resetForm() {
                 $('#permission_id').val('');
                 $('#name').val('');
-                $('#permissionModalLabel').text('Add Permission');
+                $('#permissionModalLabel').text('@lang('permissions.add_permission')');
                 $('.invalid-feedback').empty();
                 $('.is-invalid').removeClass('is-invalid');
                 // Reset validation

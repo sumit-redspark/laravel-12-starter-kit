@@ -9,16 +9,16 @@ use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
-        // Call the seeders in the correct order
-        $this->call([
-            PermissionSeeder::class,
-            RoleSeeder::class,
-            UserSeeder::class,
-        ]);
-    }
+     /**
+      * Seed the application's database.
+      */
+     public function run(): void
+     {
+          // Call the seeders in the correct order
+          $this->call([
+               PermissionSeeder::class,
+               RoleSeeder::class,
+               UserSeeder::class,
+          ]);
+     }
 }
